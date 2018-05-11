@@ -1,22 +1,37 @@
 
-import React, { Component } from 'react';
+import React, { Component , ReactDOM} from 'react';
 import './App.css';
 // import the Google Maps API Wrapper from google-maps-react
 import { GoogleApiWrapper } from 'google-maps-react'
 // import child component
 import MapContainer from './MapContainer'
+
 class App extends Component {
+
+  state = {
+     containerWidth: "0"
+  }
+
+  openDrawer = () =>{
+  this.setState({containerWidth: "250px"})
+  }
+
+  closeDrawer = () => {
+
+    this.setState({closeDrawer: "0"})
+  }
+
   render() {
     return (
 
-   <div id="side-menu">
-               <div id="container">
-                    <div class="top-bar">
-                            <h1>Neighborhood Map <span id="close-sidemenu">x</span></h1>
+           <div id="side-menu">
+               <div  id="container" style={{width: this.state.containerWidth , height:"100vh"}}>
+                    <div className="top-bar">
+                            <h1 >Neighborhood Map <span onClick={this.closeDrawer} id="close-sidemenu">x</span></h1>
                         </div>
-                        <div id="my-side-nav" class="side-nav">
-                            <input id="search-field" type="search" placeholder="Search" class="searcher"/>
-                            <input id="filter-button" type="button" value="Filter" class="filter-button"/>
+                        <div id="my-side-nav" className="side-nav">
+                            <input id="search-field" type="search" placeholder="Search" className="searcher"/>
+                            <input id="filter-button" type="button" value="Filter" className="filter-button"/>
                         </div>
                       <div id="listview">
                             <ul>
@@ -25,7 +40,7 @@ class App extends Component {
 
                </div>
 
-            <div class="nav-opener-holder"><span id="navigation-open" >&#9776; open</span> </div>
+            <div onClick={this.openDrawer} className="nav-opener-holder"><span id="navigation-open" >&#9776; open</span> </div>
 
              <MapContainer google={this.props.google} />
         </div>
