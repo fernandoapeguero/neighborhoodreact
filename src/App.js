@@ -41,8 +41,9 @@ class App extends Component {
                </div>
 
             <div onClick={this.openDrawer} className="nav-opener-holder"><span id="navigation-open" >&#9776; open</span> </div>
-
+           <div className="mapHolder">
              <MapContainer google={this.props.google} />
+             </div>
         </div>
     );
   }
