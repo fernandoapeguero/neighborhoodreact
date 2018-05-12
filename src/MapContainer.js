@@ -4,29 +4,29 @@ import ReactDOM from 'react-dom'
 export default class MapContainer extends Component {
 
 
+  state ={
+    img: []
+  }
+
   componentDidMount() {
     this.loadMap();
-
-    this.props.allMarkers.map(loc => {
-      fetch("https://api.flickr.com/services/feeds/photos_public.gne?tags=" + loc.title + "&format=json&nojsoncallback=true"
-    ).then(response =>{
-      console.log(response);
-      return response ;
-     });
-    }
-
-    )
-
-
     // call loadMap function to load the google map
   }
 
+   imageLoader = (querySearch) => {
 
+      fetch("https://api.unsplash.com/search/photos?page=1&query=" + querySearch ,{
+        headers: {
+          Authorization: "Client-ID fa7b4d3f7a1cf70d22c9d0fe4446294f729e8fd1dfacd72f7582e81b593be383"
+        }
+      }
+    ).then(data => data.json()
+     ).then(data => {
+       return data.results[2].urls.thumb
+     }).catch(err => console.log("image not found " + err)
 
-  // imageLoader = (searchable) => {
-
-
-  // }
+    );
+    }
 
   loadMap() {
     if (this.props && this.props.google) { // checks to make sure that props have been passed
@@ -58,7 +58,7 @@ export default class MapContainer extends Component {
         bounds.extend(loc.location);
 
         let infoWin = new google.maps.InfoWindow({
-            content: loc.title
+            content:`<img  src={require('${this.imageLoader(loc.title)}')} alt="${loc.title}" > <p>${loc.title}</p>`
         });
 
         marker.addListener('click',function(){
@@ -68,11 +68,8 @@ export default class MapContainer extends Component {
        })// creates a new Google map on the specified node (ref='map') with the specified configuration set above.
 
       this.map.fitBounds(bounds);
-
-
     }
   }
-
 
   render() {
     const style = { // MUST specify dimensions of the Google map or it will not work. Also works best when style is specified inside the render function and created as an object
