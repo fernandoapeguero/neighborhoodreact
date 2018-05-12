@@ -6,6 +6,8 @@ import { GoogleApiWrapper } from 'google-maps-react'
 // import child component
 import MapContainer from './MapContainer'
 
+import List from './listView'
+
 
 class App extends Component {
 
@@ -83,8 +85,8 @@ class App extends Component {
     }
   ] ,
   query : "" ,
-  markers: [] ,
-  mapWiddth: 100+"%"
+  markers :[],
+  mapWidth: 100+"%"
 
   }
 
@@ -100,6 +102,11 @@ class App extends Component {
   onQueryUpdate = (query , event) => {
     this.setState({query: query })
   }
+
+  filterMarkers = () =>{
+
+
+  }
   render() {
 
 
@@ -114,21 +121,15 @@ class App extends Component {
                             <input id="search-field" type="search" value={this.state.query} onChange={(event) => this.onQueryUpdate(event.target.value)} placeholder="Search" className="searcher"/>
                             <input id="filter-button" type="button" value="Filter" className="filter-button" />
                         </div>
-                      <div >
-                            <ul id="listview" style={{marginTop: "20px"}}>
-
-                              { this.state.locations.map(element => {
-                                  return `${element.title}`
-                              }) }
-
-                                </ul>
+                      <div>
+                       <List someMark={this.state.locations.filter(data => data.title.toLowerCase().includes(this.state.query))}/>
                       </div>
 
                </div>
 
             <div onClick={this.openDrawer} className="nav-opener-holder"><span id="navigation-open" >&#9776; open</span> </div>
            <div className="mapHolder">
-             <MapContainer markerHolder={this.state.markers} google={this.props.google}  allMarkers={this.state.locations} mapWidth={this.mapWidth}/>
+             <MapContainer querySearch={this.state.query} google={this.props.google}  allMarkers={this.state.locations.filter(data => data.title.toLowerCase().includes(this.state.query))} mapWidth={this.mapWidth}/>
              </div>
         </div>
     );

@@ -59,11 +59,17 @@ html , body {
 }
 
 #listview{
+padding: 0;
 color: white;
 cursor: pointer;
  list-style-type: none;
 }
 
+
+#listview li {
+padding: 5px;
+
+}
 
 #close-sidemenu{
   color: white;
@@ -152,6 +158,12 @@ input[type=button]{
   font-size: 16px;
 
 }
+
+input[type=button]:hover{
+  background-color: #0aacf7;
+  cursor: pointer;
+}
+
 img {
  width: 100px;;
 }

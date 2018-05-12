@@ -5,8 +5,28 @@ export default class MapContainer extends Component {
 
 
   componentDidMount() {
-    this.loadMap(); // call loadMap function to load the google map
+    this.loadMap();
+
+    this.props.allMarkers.map(loc => {
+      fetch("https://api.flickr.com/services/feeds/photos_public.gne?tags=" + loc.title + "&format=json&nojsoncallback=true"
+    ).then(response =>{
+      console.log(response);
+      return response ;
+     });
+    }
+
+    )
+
+
+    // call loadMap function to load the google map
   }
+
+
+
+  // imageLoader = (searchable) => {
+
+
+  // }
 
   loadMap() {
     if (this.props && this.props.google) { // checks to make sure that props have been passed
@@ -25,14 +45,16 @@ export default class MapContainer extends Component {
       this.map = new maps.Map(node, mapConfig);
       let bounds = new google.maps.LatLngBounds();
 
-      this.props.allMarkers.forEach(loc => {
+         {console.log(this.props.querySearch)}
+        this.props.allMarkers.map(loc => {
         const marker = new google.maps.Marker({
         position: loc.location,
         title: loc.title,
         map: this.map ,
         animation: google.maps.Animation.DROP
         })
-        this.props.markerHolder.push(marker)
+      // let img = this.imageLoader(loc.title);
+        // this.props.markerHolder.push(marker)
         bounds.extend(loc.location);
 
         let infoWin = new google.maps.InfoWindow({
@@ -43,13 +65,13 @@ export default class MapContainer extends Component {
         infoWin.open(this.map , marker);
         })
 
-      })// creates a new Google map on the specified node (ref='map') with the specified configuration set above.
+       })// creates a new Google map on the specified node (ref='map') with the specified configuration set above.
 
       this.map.fitBounds(bounds);
 
-      }
-    }
 
+    }
+  }
 
 
   render() {
