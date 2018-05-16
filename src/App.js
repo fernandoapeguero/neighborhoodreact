@@ -85,7 +85,6 @@ class App extends Component {
     }
   ] ,
   query : "" ,
-  markers :[],
   mapWidth: 100+"%"
 
   }
@@ -99,7 +98,8 @@ class App extends Component {
     this.setState({mapWidth: 100 +"%" , containerWidth: 0})
   }
 
-  onQueryUpdate = (query , event) => {
+  onQueryUpdate = (query ) => {
+      console.log(query);
     this.setState({query: query })
   }
 
@@ -118,7 +118,7 @@ class App extends Component {
                             <h2 >Neighborhood Map <span onClick={this.closeDrawer} id="close-sidemenu">x</span></h2>
                         </div>
                         <div id="my-side-nav" className="side-nav">
-                            <input id="search-field" type="search" value={this.state.query} onChange={(event) => this.onQueryUpdate(event.target.value)} placeholder="Search" className="searcher"/>
+                            <input id="search-field" type="search" value={this.state.query} onChange={(event) => this.onQueryUpdate(event.target.value)} placeholder="Search"  className="searcher"/>
                             <input id="filter-button" type="button" value="Filter" className="filter-button" />
                         </div>
                       <div>
@@ -126,10 +126,9 @@ class App extends Component {
                       </div>
 
                </div>
-
             <div onClick={this.openDrawer} className="nav-opener-holder"><span id="navigation-open" >&#9776; open</span> </div>
            <div className="mapHolder">
-             <MapContainer querySearch={this.state.query} google={this.props.google}  allMarkers={this.state.locations.filter(data => data.title.toLowerCase().includes(this.state.query))} mapWidth={this.mapWidth}/>
+             <MapContainer queryChanger={this.state.query} google={this.props.google}  allMarkers={this.state.locations.filter(data => data.title.toLowerCase().includes(this.state.query))} mapWidth={this.mapWidth}/>
              </div>
         </div>
     );

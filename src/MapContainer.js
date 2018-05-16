@@ -1,17 +1,32 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom'
 
-export default class MapContainer extends Component {
+ class MapContainer extends Component {
 
-
-  state ={
-    img: []
+  state = {
+    markers: []
   }
 
   componentDidMount() {
     this.loadMap();
-    // call loadMap function to load the google map
+
   }
+
+
+  componentWillUpdate(){
+    console.log(this.props.queryChanger.length)
+    if(this.props.queryChanger.length > 0){
+      this.state.markers.map(data => data.title.toLowerCase().includes(this.props.queryChanger) ? data.setMap(this.map) : data.setMap(null));
+    }
+
+    if (this.props.queryChanger.length  === 0) {
+      this.state.markers.map(data => data.setMap(this.map));
+      // this.markers();
+
+    }
+  }
+
+
 
    imageLoader = (querySearch) => {
 
@@ -38,37 +53,42 @@ export default class MapContainer extends Component {
 
       const mapConfig = Object.assign({}, {
         center: {lat: 40.7485722, lng: -74.0068633}, // sets center of google map to NYC.
-        zoom: 11, // sets zoom. Lower numbers are zoomed further out.
-        mapTypeId: 'roadmap' // optional main map layer. Terrain, satellite, hybrid or roadmap--if unspecified, defaults to roadmap.
+        zoom: 10, // sets zoom. Lower numbers are zoomed further out.
+        mapTypeId: 'roadmap',
+        maxZoom: 15 // optional main map layer. Terrain, satellite, hybrid or roadmap--if unspecified, defaults to roadmap.
       })
 
       this.map = new maps.Map(node, mapConfig);
-      let bounds = new google.maps.LatLngBounds();
+      this.markers();
 
-         {console.log(this.props.querySearch)}
-        this.props.allMarkers.map(loc => {
-        const marker = new google.maps.Marker({
-        position: loc.location,
-        title: loc.title,
-        map: this.map ,
-        animation: google.maps.Animation.DROP
-        })
-      // let img = this.imageLoader(loc.title);
-        // this.props.markerHolder.push(marker)
-        bounds.extend(loc.location);
-
-        let infoWin = new google.maps.InfoWindow({
-            content:`<img  src={require('${this.imageLoader(loc.title)}')} alt="${loc.title}" > <p>${loc.title}</p>`
-        });
-
-        marker.addListener('click',function(){
-        infoWin.open(this.map , marker);
-        })
-
-       })// creates a new Google map on the specified node (ref='map') with the specified configuration set above.
-
-      this.map.fitBounds(bounds);
     }
+  }
+
+
+  markers = () =>{
+
+    const {google} = this.props; // sets props equal to google
+
+    let bounds = new google.maps.LatLngBounds();
+      this.props.allMarkers.map(loc => {
+      const marker = new google.maps.Marker({
+      position: loc.location,
+      title: loc.title,
+      map: this.map ,
+      animation: google.maps.Animation.DROP
+      })
+
+      bounds.extend(loc.location);
+      let infoWin = new google.maps.InfoWindow({
+        content: loc.title
+      });
+      this.state.markers.push(marker);
+      marker.addListener('click' , function(){
+           infoWin.open(this.map , this);
+
+      });
+     })// creates a new Google map on the specified node (ref='map') with the specified configuration set above.
+    this.map.fitBounds(bounds);
   }
 
   render() {
@@ -81,7 +101,11 @@ export default class MapContainer extends Component {
     return ( // in our return function you must return a div with ref='map' and style.
       <div ref="map" style={style}>
         loading map...
+
       </div>
     )
   }
 }
+
+
+export default MapContainer

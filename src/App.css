@@ -131,12 +131,6 @@ height: 100vh;
 #map{
  height: 95%;
 }
-
-#map , .nav-opener-holder{
-
-  flex: 0 1 auto;
-}
-
 input[type=search]{
   padding-left: 10px;
   width: 80%;
