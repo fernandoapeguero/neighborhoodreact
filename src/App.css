@@ -131,8 +131,9 @@ height: 100vh;
 #map{
  height: 95%;
 }
-input[type=search]{
-  padding-left: 10px;
+
+
+input[type=text]{
   width: 80%;
   height: 30px;
   border: none;
@@ -145,7 +146,7 @@ input[type=button]{
   border: none;
   color: white;
   width: 20%;
-  height: 30px;
+  height: 32px;
   text-align: center;
   text-decoration: none;
   float: right;

@@ -21,14 +21,14 @@ class App extends Component {
         }
     },
     {
-        title: "la marina",
+        title: "la Marina",
         location: {
             lat: 40.868745,
             lng: -73.931965
         }
     },
     {
-        title: "central park",
+        title: "Central Park",
         location: {
             lat: 40.782471,
             lng: -73.966578
@@ -85,8 +85,15 @@ class App extends Component {
     }
   ] ,
   query : "" ,
-  mapWidth: 100+"%"
+  mapWidth: 100+"%" ,
+  searchTerm : ""
 
+  }
+
+  onKeyDown = (e) => {
+    if (e.keyCode === 8) {
+    this.setState({searchTerm: "" , query: ""})
+    }
   }
 
   openDrawer = () =>{
@@ -99,8 +106,20 @@ class App extends Component {
   }
 
   onQueryUpdate = (query ) => {
-      console.log(query);
-    this.setState({query: query })
+          console.log(query.length + " app value ");
+        this.setState({query: query })
+        console.log(this.state.query.length + " query state value ")
+  }
+
+
+  updateSearchTerm = () => {
+
+    this.setState({searchTerm: this.state.query});
+  }
+
+  updateListItem = (listTitle) => {
+      console.log(listTitle + "inside app")
+    this.setState({searchTerm: listTitle , query: listTitle})
   }
 
   filterMarkers = () =>{
@@ -118,17 +137,17 @@ class App extends Component {
                             <h2 >Neighborhood Map <span onClick={this.closeDrawer} id="close-sidemenu">x</span></h2>
                         </div>
                         <div id="my-side-nav" className="side-nav">
-                            <input id="search-field" type="search" value={this.state.query} onChange={(event) => this.onQueryUpdate(event.target.value)} placeholder="Search"  className="searcher"/>
-                            <input id="filter-button" type="button" value="Filter" className="filter-button" />
+                            <input id="search-field" type="text"  value={this.state.query} onChange={(event) => this.onQueryUpdate(event.target.value)} placeholder="Filter places" onKeyDown={(e) => this.onKeyDown(e)} />
+                            <input id="filter-button" type="button" value="Filter" className="filter-button" onClick={this.updateSearchTerm}/>
                         </div>
                       <div>
-                       <List someMark={this.state.locations.filter(data => data.title.toLowerCase().includes(this.state.query))}/>
+                       <List someMark={this.state.locations.filter(data => data.title.toLowerCase().includes(this.state.query.toLowerCase().trim() ))} updateMarkersList={this.updateListItem}/>
                       </div>
 
                </div>
             <div onClick={this.openDrawer} className="nav-opener-holder"><span id="navigation-open" >&#9776; open</span> </div>
            <div className="mapHolder">
-             <MapContainer queryChanger={this.state.query} google={this.props.google}  allMarkers={this.state.locations.filter(data => data.title.toLowerCase().includes(this.state.query))} mapWidth={this.mapWidth}/>
+             <MapContainer  queryChanger={this.state.searchTerm} google={this.props.google}  allMarkers={this.state.locations.filter(data => data.title.toLowerCase().includes(this.state.query.toLowerCase().trim() ))} mapWidth={this.mapWidth}/>
              </div>
         </div>
     );

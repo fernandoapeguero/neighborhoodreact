@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom'
  class MapContainer extends Component {
 
   state = {
-    markers: []
+     markers: []
   }
 
   componentDidMount() {
@@ -12,20 +12,21 @@ import ReactDOM from 'react-dom'
 
   }
 
-
-  componentWillUpdate(){
-    console.log(this.props.queryChanger.length)
-    if(this.props.queryChanger.length > 0){
-      this.state.markers.map(data => data.title.toLowerCase().includes(this.props.queryChanger) ? data.setMap(this.map) : data.setMap(null));
+  componentDidUpdate(){
+        console.log(this.props.queryChanger)
+    if(this.props.queryChanger.length > 1){
+      this.state.markers.map(data => data.title.toLowerCase().includes(this.props.queryChanger.toLowerCase()) ? data.setMap(this.map) : data.setMap(null));
     }
 
-    if (this.props.queryChanger.length  === 0) {
-      this.state.markers.map(data => data.setMap(this.map));
-      // this.markers();
-
-    }
+    // if(this.props.queryChanger === "" && this.props.queryChanger >= 0){
+    //   this.markers();
+    // }
   }
 
+componentWillUpdate(){
+
+     this.markers();
+}
 
 
    imageLoader = (querySearch) => {
@@ -37,7 +38,7 @@ import ReactDOM from 'react-dom'
       }
     ).then(data => data.json()
      ).then(data => {
-       return data.results[2].urls.thumb
+       return data.results[0].urls.thumb
      }).catch(err => console.log("image not found " + err)
 
     );
@@ -50,12 +51,11 @@ import ReactDOM from 'react-dom'
 
       const mapRef = this.refs.map; // looks for HTML div ref 'map'. Returned in render below.
       const node = ReactDOM.findDOMNode(mapRef); // finds the 'map' div in the React DOM, names it node
-
       const mapConfig = Object.assign({}, {
         center: {lat: 40.7485722, lng: -74.0068633}, // sets center of google map to NYC.
         zoom: 10, // sets zoom. Lower numbers are zoomed further out.
         mapTypeId: 'roadmap',
-        maxZoom: 15 // optional main map layer. Terrain, satellite, hybrid or roadmap--if unspecified, defaults to roadmap.
+        maxZoom: 18 // optional main map layer. Terrain, satellite, hybrid or roadmap--if unspecified, defaults to roadmap.
       })
 
       this.map = new maps.Map(node, mapConfig);
@@ -68,7 +68,7 @@ import ReactDOM from 'react-dom'
   markers = () =>{
 
     const {google} = this.props; // sets props equal to google
-
+     this.state.markers.map( data => this.map.getBounds().contains(data.position) ? data.setMap(null) : "");
     let bounds = new google.maps.LatLngBounds();
       this.props.allMarkers.map(loc => {
       const marker = new google.maps.Marker({
@@ -80,7 +80,7 @@ import ReactDOM from 'react-dom'
 
       bounds.extend(loc.location);
       let infoWin = new google.maps.InfoWindow({
-        content: loc.title
+        content: `<img src="${this.imageLoader(loc.title)}" al="${loc.title}" >   <p>${loc.title} </p>`
       });
       this.state.markers.push(marker);
       marker.addListener('click' , function(){
@@ -94,7 +94,7 @@ import ReactDOM from 'react-dom'
   render() {
     const style = { // MUST specify dimensions of the Google map or it will not work. Also works best when style is specified inside the render function and created as an object
       width: this.props.mapWidth, // 90vw basically means take up 90% of the width screen. px also works.
-      height: '100vh',
+      height: '96vh',
        // 75vh similarly will take up roughly 75% of the height of the screen. px also works.
     }
 
