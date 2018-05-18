@@ -137,7 +137,7 @@ class App extends Component {
                             <h2 >Neighborhood Map <span onClick={this.closeDrawer} id="close-sidemenu">x</span></h2>
                         </div>
                         <div id="my-side-nav" className="side-nav">
-                            <input id="search-field" type="text"  value={this.state.query} onChange={(event) => this.onQueryUpdate(event.target.value)} placeholder="Filter places" onKeyDown={(e) => this.onKeyDown(e)} />
+                            <input role="searchbox" id="search-field" type="text"  value={this.state.query} onChange={(event) => this.onQueryUpdate(event.target.value)} placeholder="Filter places" onKeyDown={(e) => this.onKeyDown(e)} />
                             <input id="filter-button" type="button" value="Filter" className="filter-button" onClick={this.updateSearchTerm}/>
                         </div>
                       <div>
@@ -146,7 +146,7 @@ class App extends Component {
 
                </div>
             <div onClick={this.openDrawer} className="nav-opener-holder"><span id="navigation-open" >&#9776; open</span> </div>
-           <div className="mapHolder">
+           <div tabIndex="-1" className="mapHolder">
              <MapContainer  queryChanger={this.state.searchTerm} google={this.props.google}  allMarkers={this.state.locations.filter(data => data.title.toLowerCase().includes(this.state.query.toLowerCase().trim() ))} mapWidth={this.mapWidth}/>
              </div>
         </div>
