@@ -21,6 +21,7 @@ after you have the browser ready you need a text editors it does not have to be 
 Ones you Are ready And have finish installing your text editor just open the project folder in the editor and go to your terminal to add the node dependencies that the project need to run.
 
 **npm install** to install all of the dependencies.
+
 **npm start** to sync your code with the browser with this you can see your code changes live.
 
 
