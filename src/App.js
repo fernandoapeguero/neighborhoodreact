@@ -100,7 +100,6 @@ class App extends Component {
 
   }
 
-
   componentWillMount() {
       this.openDrawer();
   }
@@ -134,7 +133,6 @@ class App extends Component {
       })
   }
 
-
   updateSearchTerm = () => {
 
       this.setState({
@@ -151,10 +149,8 @@ class App extends Component {
 
   filterMarkers = () => {
 
-
   }
   render() {
-
 
     return (
 
