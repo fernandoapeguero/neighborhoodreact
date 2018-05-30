@@ -5,7 +5,6 @@ class ListView extends Component {
 
 
 callProp = (value) => {
-    console.log(value);
     this.props.updateMarkersList(value);
 
 }
@@ -14,13 +13,12 @@ render(){
 
        return(
 
-        <ul  id="listview" style={{marginTop: "20px"}}>
-
+        <dl id="listview">
         { this.props.someMark.map((element , index) => {
-            return <li key={index} onClick={() =>this.callProp(element.title)} > {element.title} </li>
+            return <dt tabIndex="0" key={index} onClick={() =>this.callProp(element.title)} > {element.title} </dt>
         }) }
 
-          </ul>
+          </dl>
 
        )
 }

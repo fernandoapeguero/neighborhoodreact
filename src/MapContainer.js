@@ -41,7 +41,6 @@ componentWillUpdate(){
 
       this.map = new maps.Map(node, mapConfig);
       this.markers();
-
     }
   }
 
@@ -92,13 +91,12 @@ componentWillUpdate(){
     }
 
     return ( // in our return function you must return a div with ref='map' and style.
-      <div tabIndex="-1" ref="map" style={style}>
+      <div tabIndex="0" aria-label="google map" ref="map" style={style}>
         loading map...
 
       </div>
     )
   }
 }
-
 
 export default MapContainer
