@@ -15,7 +15,8 @@ import ReactDOM from 'react-dom'
 
   componentDidUpdate(){
 
-    if(this.props.queryChanger.length > 1){
+    if(this.props.length > 1){
+      this.state.markers.map( data => this.map.getBounds().contains(data.position) ? data.setMap(null) : "");
       this.state.markers.map(data => data.title.toLowerCase().includes(this.props.queryChanger.toLowerCase()) ? data.setMap(this.map) : data.setMap(null));
     }
   }

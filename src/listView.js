@@ -6,7 +6,6 @@ class ListView extends Component {
 
 callProp = (value) => {
     this.props.updateMarkersList(value);
-
 }
 
 render(){

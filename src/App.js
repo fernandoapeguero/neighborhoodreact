@@ -147,16 +147,13 @@ class App extends Component {
       })
   }
 
-  filterMarkers = () => {
-
-  }
   render() {
 
     return (
 
            <div id="side-menu">
                <aside  id="container" style={{width: this.state.containerWidth , height:"100vh"}}>
-                    <div tabIndex="0" className="top-bar">
+                    <div className="top-bar">
                             <h2 >Neighborhood Map <span tabIndex="0" role="button" aria-label="close side menu" onClick={this.closeDrawer} id="close-sidemenu">x</span></h2>
                         </div>
                         <div  id="my-side-nav" className="side-nav">
@@ -168,9 +165,9 @@ class App extends Component {
                       </div>
 
                </aside>
-            <div tabIndex="0"  onClick={this.openDrawer} className="nav-opener-holder"><span id="navigation-open" role="button" aria-label="open side menu" >&#9776; open</span> </div>
+            <div tabIndex="0" onKeyPress={this.openDrawer} className="nav-opener-holder"><span id="navigation-open" role="button" aria-label="open side menu" >&#9776; open</span> </div>
            <div tabIndex="-1" className="mapHolder">
-             <MapContainer  queryChanger={this.state.searchTerm} google={this.props.google}  allMarkers={this.state.locations.filter(data => data.title.toLowerCase().includes(this.state.query.toLowerCase().trim() ))} mapWidth={this.mapWidth}/>
+             <MapContainer  queryChanger={this.state.searchTerm} google={this.props.google}  allMarkers={this.state.locations.filter(data => this.state.query.length === 0 ?  data : data.title.toLowerCase().includes(this.state.query.toLowerCase().trim()) )   } mapWidth={this.mapWidth}/>
              </div>
         </div>
     );
