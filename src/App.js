@@ -96,12 +96,16 @@ class App extends Component {
       ],
       query: "",
       mapWidth: 100 + "%",
-      searchTerm: ""
+      searchTerm: "" ,
+      displayVisibility: ""
 
   }
 
   componentWillMount() {
-      this.openDrawer();
+
+    setTimeout(() => {
+        this.openDrawer();
+    }, 1000);
   }
 
   onKeyDown = (e) => {
@@ -115,6 +119,7 @@ class App extends Component {
 
   openDrawer = () => {
       this.setState({
+          displayVisibility: "",
           containerWidth: "250px",
           mapWidth: 70 + "%"
       });
@@ -124,7 +129,8 @@ class App extends Component {
 
       this.setState({
           mapWidth: 100 + "%",
-          containerWidth: "0"
+          containerWidth: "0" ,
+          displayVisibility: "none"
       });
   }
 
@@ -155,7 +161,7 @@ class App extends Component {
     return (
 
            <div id="side-menu">
-               <aside  id="container" style={{width: this.state.containerWidth , height:"100vh"}}>
+               <aside  id="container" style={{width: this.state.containerWidth , height:"100vh" , display: this.state.displayVisibility }}>
                     <div className="top-bar">
                             <h2 >Neighborhood Map <span tabIndex="0" role="button" aria-label="close side menu" onKeyPress={this.closeDrawer} onClick={this.closeDrawer} id="close-sidemenu">x</span></h2>
                         </div>
@@ -168,7 +174,7 @@ class App extends Component {
                       </div>
 
                </aside>
-            <div tabIndex="0"  onKeyDown={this.openDrawer} onClick={this.openDrawer} className="nav-opener-holder"><span id="navigation-open" role="button" aria-label="open side menu" >&#9776; open</span> </div>
+            <div tabIndex="1"  onKeyDown={this.openDrawer} onClick={this.openDrawer} className="nav-opener-holder"><span id="navigation-open" role="button" aria-label="open side menu" >&#9776; open</span> </div>
            <div tabIndex="-1" className="mapHolder">
              <MapContainer  queryChanger={this.state.searchTerm} google={this.props.google}  allMarkers={this.state.locations.filter(data => data.title.toLowerCase().includes(this.state.query.toLowerCase().trim() ))}  mapWidth={this.mapWidth}/>
              </div>
