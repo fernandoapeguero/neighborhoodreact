@@ -12,7 +12,7 @@ import List from './listView'
 class App extends Component {
 
   state = {
-      containerWidth: "250px",
+      containerWidth: "0",
       locations: [{
               title: "Riverside Park",
               location: {
@@ -95,7 +95,7 @@ class App extends Component {
           }
       ],
       query: "",
-      mapWidth: 70 + "%",
+      mapWidth: 100 + "%",
       searchTerm: ""
 
   }
@@ -103,6 +103,7 @@ class App extends Component {
   componentWillMount() {
       this.openDrawer();
   }
+
   onKeyDown = (e) => {
       if (e.keyCode === 8) {
           this.setState({
@@ -116,15 +117,15 @@ class App extends Component {
       this.setState({
           containerWidth: "250px",
           mapWidth: 70 + "%"
-      })
+      });
   }
 
   closeDrawer = () => {
 
       this.setState({
           mapWidth: 100 + "%",
-          containerWidth: 0
-      })
+          containerWidth: "0"
+      });
   }
 
   onQueryUpdate = (query) => {
@@ -141,6 +142,8 @@ class App extends Component {
   }
 
   updateListItem = (listTitle) => {
+
+    this.onQueryUpdate(listTitle);
       this.setState({
           searchTerm: listTitle,
           query: listTitle
@@ -154,7 +157,7 @@ class App extends Component {
            <div id="side-menu">
                <aside  id="container" style={{width: this.state.containerWidth , height:"100vh"}}>
                     <div className="top-bar">
-                            <h2 >Neighborhood Map <span tabIndex="0" role="button" aria-label="close side menu" onClick={this.closeDrawer} id="close-sidemenu">x</span></h2>
+                            <h2 >Neighborhood Map <span tabIndex="0" role="button" aria-label="close side menu" onKeyPress={this.closeDrawer} onClick={this.closeDrawer} id="close-sidemenu">x</span></h2>
                         </div>
                         <div  id="my-side-nav" className="side-nav">
                             <input  role="searchbox" id="search-field" type="text"  value={this.state.query} onChange={(event) => this.onQueryUpdate(event.target.value)} placeholder="Filter places" onKeyDown={(e) => this.onKeyDown(e)} />
@@ -165,9 +168,9 @@ class App extends Component {
                       </div>
 
                </aside>
-            <div tabIndex="0" onKeyPress={this.openDrawer} className="nav-opener-holder"><span id="navigation-open" role="button" aria-label="open side menu" >&#9776; open</span> </div>
+            <div tabIndex="0"  onKeyDown={this.openDrawer} onClick={this.openDrawer} className="nav-opener-holder"><span id="navigation-open" role="button" aria-label="open side menu" >&#9776; open</span> </div>
            <div tabIndex="-1" className="mapHolder">
-             <MapContainer  queryChanger={this.state.searchTerm} google={this.props.google}  allMarkers={this.state.locations.filter(data => this.state.query.length === 0 ?  data : data.title.toLowerCase().includes(this.state.query.toLowerCase().trim()) )   } mapWidth={this.mapWidth}/>
+             <MapContainer  queryChanger={this.state.searchTerm} google={this.props.google}  allMarkers={this.state.locations.filter(data => data.title.toLowerCase().includes(this.state.query.toLowerCase().trim() ))}  mapWidth={this.mapWidth}/>
              </div>
         </div>
     );

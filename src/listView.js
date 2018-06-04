@@ -12,12 +12,12 @@ render(){
 
        return(
 
-        <dl id="listview">
+        <ul id="listview">
         { this.props.someMark.map((element , index) => {
-            return <dt tabIndex="0" key={index} onClick={() =>this.callProp(element.title)} > {element.title} </dt>
+            return <li tabIndex="0" key={index} onKeyPress={() =>this.callProp(element.title)} onClick={() =>this.callProp(element.title)} > {element.title} </li>
         }) }
 
-          </dl>
+          </ul>
            )
 }
 

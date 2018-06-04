@@ -10,14 +10,13 @@ import ReactDOM from 'react-dom'
 
   componentDidMount() {
     this.loadMap();
-
+    this.imageLoader();
   }
 
   componentDidUpdate(){
 
-    if(this.props.length > 1){
-      this.state.markers.map( data => this.map.getBounds().contains(data.position) ? data.setMap(null) : "");
-      this.state.markers.map(data => data.title.toLowerCase().includes(this.props.queryChanger.toLowerCase()) ? data.setMap(this.map) : data.setMap(null));
+    if(this.props.queryChanger.length > 1){
+      this.markers();
     }
   }
 
@@ -25,6 +24,23 @@ componentWillUpdate(){
      this.markers();
 
 }
+
+imageLoader = (querySearch) => {
+
+    fetch("https://api.unsplash.com/search/photos?page=1&query=" + querySearch ,{
+     headers: {
+         Authorization: "Client-ID fa7b4d3f7a1cf70d22c9d0fe4446294f729e8fd1dfacd72f7582e81b593be383"
+         }
+    }).then(data => data.json()
+    ).then(data => {
+     console.log(data.results[0].urls.thumb);
+
+   this.state.img.push(data.results[0].urls.thumb)
+    }).catch(err => {
+
+    console.log("image not found " + err)}
+
+      ); }
 
   loadMap() {
     if (this.props && this.props.google) { // checks to make sure that props have been passed
@@ -49,7 +65,7 @@ componentWillUpdate(){
   markers = () =>{
 
     const {google} = this.props; // sets props equal to google
-     this.state.markers.map( data => this.map.getBounds().contains(data.position) ? data.setMap(null) : "");
+     this.state.markers.map(data  => this.map.getBounds().contains(data.position) ? data.setMap(null) : "");
     let bounds = new google.maps.LatLngBounds();
       this.props.allMarkers.map(loc   => {
       const marker = new google.maps.Marker({
@@ -58,10 +74,10 @@ componentWillUpdate(){
       map: this.map ,
       animation: google.maps.Animation.DROP
       });
-
+      console.log(this.state.img);
       bounds.extend(loc.location);
       let infoWin = new google.maps.InfoWindow({
-        content: `<p>${loc.title} </p>`
+        content: ` <img src="${this.state.img[0]}" alt="${loc.title}" height="42" width="42">   <p>${loc.title} </p>`
       });
       this.state.markers.push(marker);
 
