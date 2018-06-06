@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom'
+import ErrorBoundary from './ErrorBoundary';
+
 
  class MapContainer extends Component {
 
@@ -35,7 +37,7 @@ imageLoader = (querySearch) => {
     ).then(data => {
      console.log(data.results[0].urls.thumb);
 
-   this.state.img.push(data.results[0].urls.thumb)
+   this.state.img.push(data.results[1].urls.thumb)
     }).catch(err => {
 
     console.log("image not found " + err)}
@@ -98,6 +100,7 @@ imageLoader = (querySearch) => {
     this.map.fitBounds(bounds);
   }
 
+
   render() {
     const style = { // MUST specify dimensions of the Google map or it will not work. Also works best when style is specified inside the render function and created as an object
       width: this.props.mapWidth, // 90vw basically means take up 90% of the width screen. px also works.
@@ -106,10 +109,13 @@ imageLoader = (querySearch) => {
     }
 
     return ( // in our return function you must return a div with ref='map' and style.
+    <ErrorBoundary>
       <div tabIndex="0" aria-label="google map" ref="map" style={style}>
         loading map...
 
       </div>
+      </ErrorBoundary>
+
     )
   }
 }
