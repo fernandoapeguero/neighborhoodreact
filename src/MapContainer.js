@@ -7,7 +7,8 @@ import ErrorBoundary from './ErrorBoundary';
 
   state = {
      markers: [] ,
-     img: []
+     img: [],
+
   }
 
   componentDidMount() {
@@ -16,8 +17,16 @@ import ErrorBoundary from './ErrorBoundary';
   }
 
   componentDidUpdate(){
+    if(this.props.listClick === true){
 
-    if(this.props.queryChanger.length > 1){
+      this.state.markers.filter(data => {
+        if(data.title === this.props.queryChanger){
+
+        }
+      })
+    }
+
+    if(this.props.listClick === false &&this.props.queryChanger.length > 1){
       this.markers();
     }
   }
@@ -82,17 +91,25 @@ imageLoader = (querySearch) => {
         content: ` <img src="${this.state.img[0]}" alt="${loc.title}" height="42" width="42">   <p>${loc.title} </p>`
       });
       this.state.markers.push(marker);
-
+     let bouncing = false;
       let currentMarker = "";
+      if(loc.title === this.props.queryChanger){
+        infoWin.open(this.map, marker);
+        currentMarker = marker;
+      }
       marker.addListener('click' , function(){
            this.setAnimation(google.maps.Animation.BOUNCE);
            infoWin.open(this.map , this);
+           bouncing = true;
            currentMarker = this;
 
       });
 
       google.maps.event.addListener(infoWin,'closeclick',function(){
-        currentMarker.setAnimation(null); //removes the marker
+        if(bouncing === true){
+          currentMarker.setAnimation(null);
+        }
+      //removes the marker
         // then, remove the infowindows name from the array
      });
 
@@ -112,7 +129,6 @@ imageLoader = (querySearch) => {
     <ErrorBoundary>
       <div tabIndex="0" aria-label="google map" ref="map" style={style}>
         loading map...
-
       </div>
       </ErrorBoundary>
 

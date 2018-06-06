@@ -97,7 +97,8 @@ class App extends Component {
       query: "",
       mapWidth: 100 + "%",
       searchTerm: "" ,
-      displayVisibility: ""
+      displayVisibility: "" ,
+      listItemClick: false
 
   }
 
@@ -170,7 +171,7 @@ class App extends Component {
                             <input  id="filter-button" type="button" value="Filter" className="filter-button" onClick={this.updateSearchTerm}/>
                         </div>
                       <div>
-                       <List someMark={this.state.locations.filter(data => data.title.toLowerCase().includes(this.state.query.toLowerCase().trim() ))} updateMarkersList={this.updateListItem}/>
+                       <List someMark={this.state.locations.filter(data => data.title.toLowerCase().includes(this.state.query.toLowerCase().trim() ))} updateMarkersList={this.updateListItem} listClick={this.state.listItemClick}/>
                       </div>
 
                </aside>
